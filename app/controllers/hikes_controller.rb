@@ -20,6 +20,10 @@ class HikesController < ApplicationController
     
     def show
         @hike = Hike.find(params[:id])
+        respond_to do |f|
+            f.html { render :show}
+            f.json { render json: @hike}
+        end
     end
 
     def edit
