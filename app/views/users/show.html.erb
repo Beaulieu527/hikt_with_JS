@@ -1,6 +1,6 @@
-<h1>Welcome <%= current_user.email%></h1>
+<h1><%= @user.email%></h1>
 <br>
-<h2>Here are the hikes you have created</h2>
+<h2>Created Hikes</h2>
  <%current_user.hikes.order("created_at DESC").each do |hike|%>
             <div class="col-lg-4 col-sm-6 mb-4">
                 <div class="card h-100">
