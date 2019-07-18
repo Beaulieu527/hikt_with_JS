@@ -1,5 +1,5 @@
 class ReviewSerializer < ActiveModel::Serializer
   attributes :id, :content
-  belongs_to :user
-  belongs_to :hike
+  has_one :user, each_serializer: ReviewUserSerializer 
+  has_one :hike
 end

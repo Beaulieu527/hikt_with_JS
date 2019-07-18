@@ -1,8 +1,8 @@
-<h2><%= @hike.name%></h2>
+<h2><%= hike.name%></h2>
 <br>
-<h3>Created by:<%=@review.user.email%></h3>
+<h3>Created by:<%=review.user.email%></h3>
 <br>
-<p><%= @review.content%></p>
+<p><%= @eview.content%></p>
 <br>
 <%= button_to  "edit", @review, method:"patch" %>
 <br>

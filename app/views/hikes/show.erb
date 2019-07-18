@@ -1,25 +1,65 @@
 <img class="card-img-top" style= "width: 60%" src="<%=@hike.img_url%>" alt=""></a>
-                    <div class="card-body">
-                        <h1 class="card-title"><%=@hike.name%></h1>
-                        <p class="card-text"><strong>Summary:</strong><%=@hike.summary%></p>
-                        <p class="card-text"><strong>Location:</strong><%=@hike.location%></p>
-                        <p class="card-text"><strong>Length:</strong><%=@hike.length%>mi.</p>
-                        <br>
-                        <br>
+<div class="card-body">
+    <h1 class="card-title"><%=@hike.name%></h1>
+    <p class="card-text"><strong>Summary:</strong><%=@hike.summary%></p>
+    <p class="card-text"><strong>Location:</strong><%=@hike.location%></p>
+    <p class="card-text"><strong>Length:</strong><%=@hike.length%>mi.</p>
+    <br>
+    <br>
 
-                    
-                        <%= button_to  "delete", @hike, method:"delete" %>
-                
-                        <br>
-                        <a class="btn btn-warning" href=<%= edit_hike_path(@hike) %>>Edit Hike</a>
-                        <h2>Reviews:</h2>
-                            <%@hike.reviews.order_by_newest.each do |review|%>
-                                <p class="card-text"><strong><%=review.user.email%> says:</strong> <%=review.content%></p>
-                            <%end%>
-                            <br>
 
-                        <h1>Create Review</h1>
-                            <%= link_to  "Write Your Review",  new_hike_review_path(@hike) %>
-                    </div>
+    <%= button_to  "delete", @hike, method:"delete" %>
 
-                    <a type="button" class="btn btn-default" href="/hikes">Back</a>
+    <br>
+    <a class="btn btn-warning" href=<%= edit_hike_path(@hike) %>>Edit Hike</a>
+    
+    <h2>Reviews:</h2>
+    <div class="reviewResults">
+
+      <h6 id="reviewUserEmail"></h6>
+      <p id = "reviewContent"></p>
+        <!--<%@hike.reviews.order_by_newest.each do |review|%>
+          <h6 class="reviewUserEmail"><strong><%=review.user.email%> says:</h6>
+          <p class = "reviewContent"></strong> <%=review.content%></p>
+        <%end%>-->
+    </div>
+        <br>
+
+    <h1>Create Review</h1>
+        
+        <%=form_for @hike.reviews.build, url: hike_reviews_path(@hike), html: {id: @hike.id} do |f|%>
+            <div class= "field">
+                <%=f.label :content%>
+                <%= f.text_field :content, class: "form-control", required: "required" %>
+            </div>
+            <br>
+            <div class= "actions">
+                <%=f.submit%>
+            <div>
+        <%end %>
+
+</div>
+
+<script type="text/javascript" charset="utf-8">
+  $(document).on('turbolinks:load', function() {
+    $('.new_review').on('submit', function(event) {
+      //prevent form from submitting the default way
+      event.preventDefault();
+      let hike = this.action
+      var values = $(this).serialize();
+      
+      let posting =  $.post(hike , values);
+      posting.done(function(data) {
+        $("#reviewUserEmail").text(data.user.email + " says:");
+        $("#reviewContent").text(data.content);
+      });
+    });
+  });
+</script>
+
+
+## change form for to not be nested
+
+
+
+

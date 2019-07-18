@@ -2,22 +2,26 @@ class HikesController < ApplicationController
     before_action :authenticate_user! 
  
     def index
-        @hikes = Hike.search(params[:search])
+        # @hikes = Hike.search(params[:search])
+        @hikes = Hike.all
+        respond_to do |f|
+            f.html { render :index}
+            f.json { render json: @hikes}
+        end
     end
 
     def new
         @hike = Hike.new
-
     end
     
     def create
-        if @hike = current_user.hikes.create(hike_params)
-            redirect_to hikes_path
-        else 
-            render :new
+        @hike = current_user.hikes.create(hike_params)
+        respond_to do |f|
+            f.html { redirect_to home_path }
+            f.json { render json: @hike } 
         end
     end
-    
+
     def show
         @hike = Hike.find(params[:id])
         respond_to do |f|
@@ -34,9 +38,7 @@ class HikesController < ApplicationController
         @hike = Hike.find(params[:id])
         if @hike && @hike.user == current_user
             @hike.update(hike_params)
-            redirect_to hikes_path
-        else
-            render :edit
+            render json: @hike
         end
     end
 
@@ -44,9 +46,6 @@ class HikesController < ApplicationController
         @hike = Hike.find(params[:id])
         if @hike && @hike.user == current_user
             @hike.destroy
-            redirect_to hikes_path
-        else 
-            redirect_to @hike
         end
     end
 

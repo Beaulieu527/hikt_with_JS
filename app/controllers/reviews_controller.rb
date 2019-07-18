@@ -1,28 +1,31 @@
 class ReviewsController < ApplicationController
     before_action :authenticate_user!
     before_action :set_hike
+    
     def index
         @reviews = set_hike.reviews.all
+        render json: @reviews
     end
 
     def new
-        @review = set_hike.reviews.build
+        @review = Reviews.build
 
     end
-    
+
     def create
-        if current_user
-            @review = set_hike.reviews.create(review_params)
-            @review.user = current_user
-            @review.save
+        @review = Reviews.create(review_params)
+        @review.user = current_user
+        set_hike.reviews  << @review
+        render json: @review 
         redirect_to hike_path(@hike)
-        else
-            render :new
-        end
     end
     
     def show
         @review = set_hike.reviews.find(params[:id])
+        respond_to do |f|
+            f.html { render :show}
+            f.json { render json: @review}
+        end
     end
 
     def edit
@@ -30,10 +33,17 @@ class ReviewsController < ApplicationController
     end
 
     def update
-        @review = current_user.reviews.find(params[:id])
-        @review.update(review_params)
-        @review.save
-        redirect_to hike_path(@hike)
+        if @review.user
+            @review = current_user.reviews.find(params[:id])
+            @review.update(review_params)
+            @review.save
+            respond_to do |format| 
+                format.html { redirect_to hike_path(set_hike) }
+                format.json { render json: review }
+            end
+        else
+            redirect_to hike_path(@hike)
+        end
     end
 
     def destroy
