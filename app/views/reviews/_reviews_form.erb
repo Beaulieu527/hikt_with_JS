@@ -13,10 +13,13 @@
   </div>
 <% end %>
 
-<%= form_for([review], class: "form-group") do |f| %>
-     <%= f.hidden_field :set_hike%>
-    <%= f.label :content %>
-    <%= f.text_field :content, class: "form-control", required: "required" %>
-    <br>
-    <%= f.submit class: "btn btn-primary" %>
-<% end %>
+<%=form_for @hike.reviews.build, url: hike_reviews_path(@hike), html: {id: @hike.id} do |f|%>
+            <div class= "field">
+                <%=f.label :content%>
+                <%= f.text_field :content, class: "form-control", required: "required" %>
+            </div>
+            <br>
+            <div class= "actions">
+                <%=f.submit%>
+            <div>
+        <%end %>

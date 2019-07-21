@@ -4,7 +4,7 @@ class ReviewsController < ApplicationController
     
     def index
         @reviews = set_hike.reviews.all
-        render json: @reviews
+        render json: @reviews, include: {**}
     end
 
     def new
@@ -24,7 +24,7 @@ class ReviewsController < ApplicationController
         @review = set_hike.reviews.find(params[:id])
         respond_to do |f|
             f.html { render :show}
-            f.json { render json: @review}
+            f.json {render json: review, include: {**} }
         end
     end
 
@@ -39,7 +39,7 @@ class ReviewsController < ApplicationController
             @review.save
             respond_to do |format| 
                 format.html { redirect_to hike_path(set_hike) }
-                format.json { render json: review }
+                format.json { render json: review, include: {**} }
             end
         else
             redirect_to hike_path(@hike)

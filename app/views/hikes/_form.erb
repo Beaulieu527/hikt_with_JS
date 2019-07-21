@@ -1,14 +1,4 @@
-<% if @hike.errors.any? %>
-  <div id="error_explanation">
-    <h2><%= pluralize(@hike.errors.count, "error") %> prohibited this hike from being saved:</h2>
- 
-    <ul>
-    <% @hike.errors.full_messages.each do |msg| %>
-      <li><%= msg %></li>
-    <% end %>
-    </ul>
-  </div>
-<% end %>
+<h1>Add A Hike To The List</h1>
 
 <%= form_for(@hike, class: "form-group") do |f| %>
     <%= f.label :name %>
