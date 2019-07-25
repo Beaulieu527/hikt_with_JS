@@ -8,11 +8,10 @@ Rails.application.routes.draw do
   devise_scope :user do
     root 'devise/sessions#new'
   end
- 
   resources :hikes do 
     resources :reviews
   end
-  
+  resources :reviews, :only =>[:create]
   
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

@@ -1,10 +1,14 @@
 class ReviewsController < ApplicationController
     before_action :authenticate_user!
-    before_action :set_hike
+    
     
     def index
-        @reviews = set_hike.reviews.all
-        render json: @reviews, include: {**}
+        hike = Hike.find_by(id: params[:hike_id])
+        @reviews = hike.reviews
+        respond_to do |format|
+            format.html
+            format.json {render json: @reviews, status: 201}
+        end
     end
 
     def new
@@ -13,18 +17,20 @@ class ReviewsController < ApplicationController
     end
 
     def create
-        @review = Reviews.create(review_params)
+        @review = Review.create(review_params)
         @review.user = current_user
-        set_hike.reviews  << @review
-        render json: @review 
-        redirect_to hike_path(@hike)
+        @review.save
+        respond_to do |format|
+            format.html
+            format.json {render json: @review, status: 201}
+          end
     end
     
     def show
         @review = set_hike.reviews.find(params[:id])
         respond_to do |f|
-            f.html { render :show}
-            f.json {render json: review, include: {**} }
+            f.html {}
+            f.json {render json: review}
         end
     end
 
@@ -38,8 +44,8 @@ class ReviewsController < ApplicationController
             @review.update(review_params)
             @review.save
             respond_to do |format| 
-                format.html { redirect_to hike_path(set_hike) }
-                format.json { render json: review, include: {**} }
+                format.html { }
+                format.json { render json: review}
             end
         else
             redirect_to hike_path(@hike)
@@ -54,7 +60,7 @@ class ReviewsController < ApplicationController
     private
 
     def review_params
-        params.require(:review).permit(:content)
+        params.require(:review).permit(:content, :hike_id)
     end
 
 end

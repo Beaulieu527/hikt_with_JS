@@ -1,0 +1,118 @@
+
+<h1 class="text-center display-4">Hikes</h1>
+<br>
+<br>
+<a class= "btn btn-primary" href="hikes/new">Add Hike</a>
+<br>
+<br>
+<%= form_tag(hikes_path, method: :get) do %>
+  <%= text_field_tag :search %>
+  <%= submit_tag("Search") %>
+<% end %>
+<br>
+<div class="container">
+    <div class="row">
+            <%@hikes.order_by_newest.each do |hike|%>
+            <div class="col-lg-4 col-sm-6 mb-4">
+                <div class="card h-100">
+                    <img class="card-img-top, width: 700px, height: 400px" src="<%=hike.img_url%>" alt=""></a>
+                    <div class="card-body">
+                        <h5 class="card-title"><%=hike.name%></h5>
+                    </div>
+                    
+
+                    <!-- Button trigger modal -->
+                    <button type="button" id=<%=hike.id%> class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" onclick="handleFetch(event)" >
+                        Show Hike
+                    </button>
+
+                </div>
+            </div>
+            <%end%>
+
+             <!-- Modal -->
+        <div class="modal" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="hike_show" class="card-body">
+                    <h1 id="hike_name"class="card-title"></h1>
+                    <p hidden id=hike_id ></p>
+                    <p class="card-text"><strong>Summary:</strong></p>
+                    <p id="hike_summary"></p>
+                    <p class="card-text"><strong>Location:</strong></p>
+                    <p id="hike_location"></p>
+                    <p class="card-text"><strong>Length:</strong></p>
+                    <p id="hike_length">mi.</p>
+                    <br>
+                    <br>
+
+                    <h3>Reviews</h3>
+                    <div id="reviews">
+                        
+                    </div>
+                        <br>
+
+                    <h1>Create Review</h1>
+
+
+                    <%=form_for Review.new  do |f|%>
+                        <div class= "field">
+                            <%= f.text_field :content, class: "form-control", required: "required" %>
+
+                            <input type="hidden" id="hikeId" name=review[hike_id] value="">
+                        <br>
+                            <%=f.submit class: "btn btn-primary"%>
+                        <div>
+                    <%end %>
+
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript" charset="utf-8">
+
+    
+    $(document).on('turbolinks:load', function() {
+    
+        $('#new_review').on('submit', function(event) {
+        //prevent form from submitting the default way
+        event.preventDefault();
+        let hike = "hikes/" + $('#hikeId').val() + "/reviews"
+        var values = $(this).serialize();
+        
+        let posting =  $.post(hike , values);
+        posting.done(function(data) {
+            $("#reviewUserEmail").text(data.user.email + " says:");
+            $("#reviewContent").text(data.content);
+        });
+        });
+    })
+
+    const hikeId = $('#hikeId').val()
+
+    const displayReviews = (results) => {
+        let html = results.map(reviewData => new Review(reviewData).renderReview()).join('')
+        document.getElementById('#reviews').innerHTML = html
+    }
+
+
+
+    //hike js 
+    
+</script>

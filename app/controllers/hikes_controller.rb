@@ -17,7 +17,7 @@ class HikesController < ApplicationController
     def create
         @hike = current_user.hikes.create(hike_params)
         respond_to do |f|
-            f.html { redirect_to home_path }
+            f.html { redirect_to hikes_path }
             f.json { render json: @hike } 
         end
     end
@@ -26,7 +26,7 @@ class HikesController < ApplicationController
         @hike = Hike.find(params[:id])
         respond_to do |f|
             f.html { render :show}
-            f.json { render json: @hike}
+            f.json { render json: @hike, include: "**"}
         end
     end
 

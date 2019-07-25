@@ -1,24 +1,19 @@
-function handleFetch(event){
-    console.log(event.srcElement.id)
-   myFetch(`http://localhost:3000/hikes/${event.srcElement.id}.json`)
-   .then(res => res.json())
-    .then(function(json) {
-        appendResults(json)
-    })
-}
+
+
+
 
 function appendResults(res) {
     console.log(res)
+    $('#hikeId').val(`${res.id}`)
+    $('#hike_id').text(`${res.id}`)
     $('#hike_img_url').text(`${res.img_url}`)
     $('#hike_name').text(`${res.name}`)
     $('#hike_location').text(`${res.location}`)
     $('#hike_summary').text(`${res.summary}`)
-    $('#hike_length').text(`${res.length}`)
+    $('#hike_length').text(`${res.length}` + " mi.")
 }
 
-const getHikes = (hike_id) => {
-    return myFetch(`http://localhost:3000/hikes/${hike_id}.json`)
-  }
+
 
 
 class hike {
@@ -30,6 +25,7 @@ class hike {
         this.length = attributes.length
         this.img_url = attributes.img_url
     }
-
-    
 };
+
+
+

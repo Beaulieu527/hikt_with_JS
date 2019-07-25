@@ -1,1 +1,67 @@
-<%= render 'hike_show' %>
+
+<div id="hike_show" class="card-body">
+    <h1 id="hike_name"class="card-title"></h1>
+    <p class="card-text"><strong>Summary:</strong></p>
+    <p id="hike_summary"></p>
+    <p class="card-text"><strong>Location:</strong></p>
+    <p id="hike_location"></p>
+    <p class="card-text"><strong>Length:</strong></p>
+    <p id="hike_length">mi.</p>
+    <br>
+    <br>
+
+    
+    <h2>Reviews:</h2>
+      <div id="reviewResults">
+        <h6 id="reviewUserEmail"></h6>
+        <p id = "reviewContent"></p>
+      </div>
+          <br>
+
+    <h1>Create Review</h1>
+        
+        
+
+</div>
+
+<script type="text/javascript" charset="utf-8">
+  $(document).on('turbolinks:load', function() {
+    $('.new_review').on('submit', function(event) {
+      //prevent form from submitting the default way
+      event.preventDefault();
+      let hike = this.action
+      var values = $(this).serialize();
+      
+      let posting =  $.post(hike , values);
+      posting.done(function(data) {
+        $("#reviewUserEmail").text(data.user.email + " says:");
+        $("#reviewContent").text(data.content);
+      });
+    });
+  });
+
+
+
+
+  $('.new_review').submit(function( event ) {
+            alert( "Handler for .submit() called." );
+            event.preventDefault();
+            debugger
+            console.log(event)
+            let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            let hikeId = $('#hikeId').val()
+            
+             fetch(`http://localhost:3000/reviews.json`,{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-token': token
+                },
+            })
+            .then((res) => res.json())
+            .then((review) =>  console.log(review))
+            .catch((err)=>console.log(err))
+        })
+</script>
+
