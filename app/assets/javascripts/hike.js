@@ -14,8 +14,6 @@ function appendResults(res) {
 }
 
 
-
-
 class hike {
     constructor(attributes) {
         this.id = attributes.id;

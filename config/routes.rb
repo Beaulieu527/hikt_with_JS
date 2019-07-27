@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get 'home/index'
+  get '/', to: "hikes#index", as: 'root'
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
   resources :users, :only => [:show, :index]
   authenticated :user do

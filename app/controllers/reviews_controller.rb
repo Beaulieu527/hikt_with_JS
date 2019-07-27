@@ -20,10 +20,8 @@ class ReviewsController < ApplicationController
         @review = Review.create(review_params)
         @review.user = current_user
         @review.save
-        respond_to do |format|
-            format.html
-            format.json {render json: @review, status: 201}
-          end
+        render json: @review, status: 201
+
     end
     
     def show

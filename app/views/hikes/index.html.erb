@@ -22,7 +22,7 @@
                     
 
                     <!-- Button trigger modal -->
-                    <button type="button" id=<%=hike.id%> class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" onclick="handleFetch(event)" >
+                    <button type="button" id=<%=hike.id%> class="btn btn-primary" data-toggle="modal" data-target="#hikeModal" onclick="handleFetch(event)" >
                         Show Hike
                     </button>
 
@@ -31,7 +31,7 @@
             <%end%>
 
              <!-- Modal -->
-        <div class="modal" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal" id="hikeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
             <div class="modal-header">
@@ -53,7 +53,7 @@
                     <br>
                     <br>
 
-                    <h3>Reviews</h3>
+            
                     <div id="reviews">
                         
                     </div>
@@ -68,7 +68,7 @@
 
                             <input type="hidden" id="hikeId" name=review[hike_id] value="">
                         <br>
-                            <%=f.submit class: "btn btn-primary"%>
+                            <%=f.submit class: "btn btn-primary" , data: { disable_with: false }%>
                         <div>
                     <%end %>
 
@@ -91,25 +91,35 @@
     $(document).on('turbolinks:load', function() {
     
         $('#new_review').on('submit', function(event) {
-        //prevent form from submitting the default way
-        event.preventDefault();
-        let hike = "hikes/" + $('#hikeId').val() + "/reviews"
-        var values = $(this).serialize();
-        
-        let posting =  $.post(hike , values);
-        posting.done(function(data) {
-            $("#reviewUserEmail").text(data.user.email + " says:");
-            $("#reviewContent").text(data.content);
-        });
+            //prevent form from submitting the default way
+            event.preventDefault();
+            let hike = "hikes/" + $('#hikeId').val() + "/reviews"
+            var values = $(this).serialize();
+            let posting =  $.post(hike , values);
+            posting.done(function(data) {
+                console.log(data)
+                $("#reviews").append( `<p><strong>${data.user.email} said:</strong> ${data.content}</p>`)
+                $( '#new_review' ).each(function(){
+                    this.reset();
+                });
+
+            });
         });
     })
 
     const hikeId = $('#hikeId').val()
 
-    const displayReviews = (results) => {
-        let html = results.map(reviewData => new Review(reviewData).renderReview()).join('')
-        document.getElementById('#reviews').innerHTML = html
-    }
+    $('#hikeModal').on('hidden.bs.modal', function () {
+        $(this).find('form').trigger('reset');
+    })
+
+
+    //function handleClick(){
+    //    console.log('beep, boop')
+    //    $( '#new_review' ).each(function(){
+    //        this.reset();
+    //    });
+    //}
 
 
 
