@@ -1,7 +1,3 @@
-
-
-
-
 function appendResults(res) {
     console.log(res)
     $('#hikeId').val(`${res.id}`)
@@ -13,8 +9,7 @@ function appendResults(res) {
     $('#hike_length').text(`${res.length}` + " mi.")
 }
 
-
-class hike {
+class Hike {
     constructor(attributes) {
         this.id = attributes.id;
         this.name = attributes.name;

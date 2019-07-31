@@ -98,7 +98,9 @@
             let posting =  $.post(hike , values);
             posting.done(function(data) {
                 console.log(data)
-                $("#reviews").append( `<p><strong>${data.user.email} said:</strong> ${data.content}</p>`)
+                let review = new Review(data)
+                console.log(review)
+                $("#reviews").append(review.renderReview())
                 $( '#new_review' ).each(function(){
                     this.reset();
                 });
@@ -106,8 +108,6 @@
             });
         });
     })
-
-    const hikeId = $('#hikeId').val()
 
     $('#hikeModal').on('hidden.bs.modal', function () {
         $(this).find('form').trigger('reset');

@@ -1,5 +1,5 @@
 hikt_with_js
-A hikeing trail tracking web application with RESTful routes so you can keep track of all your favorite hikes.
+A hiking trail tracking web application with RESTful routes so you can keep track of all your favorite hikes.
 
 Getting Started
 Clone the repository down to your local environment using git clone <repo>
