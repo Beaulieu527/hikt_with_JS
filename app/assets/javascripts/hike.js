@@ -1,3 +1,5 @@
+
+
 function appendResults(res) {
     console.log(res)
     $('#hikeId').val(`${res.id}`)
@@ -17,6 +19,24 @@ class Hike {
         this.location = attributes.location;
         this.length = attributes.length
         this.img_url = attributes.img_url
+    }
+
+    showHike(){
+        return` <div class="col-lg-4 col-sm-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">${this.name}</h5>
+                    </div>
+                    
+
+                    <!-- Button trigger modal -->
+                    <button type="button" id="${this.id}" class="btn btn-primary" data-toggle="modal" data-target="#hikeModal" onclick="handleFetch(event)" >
+                        Show Hike
+                    </button>
+
+                </div>
+            </div>
+            `
     }
 };
 
