@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
-
+gem 'pg', '~> 0.18.4'
 ruby '2.4.5'
 gem 'active_model_serializers'
 gem 'faraday'
