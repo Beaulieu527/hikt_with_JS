@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
-gem 'pg', '~> 0.18.4'
 ruby '2.4.5'
 gem 'active_model_serializers'
 gem 'faraday'
@@ -64,6 +63,9 @@ group :test do
   gem 'selenium-webdriver'
   # Easy installation and use of chromedriver to run system tests with Chrome
   gem 'chromedriver-helper'
+end
+
+group :production do
   gem 'pg', '~> 0.18'
 end
 
