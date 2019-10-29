@@ -1,6 +1,6 @@
 const hikes = [] 
 function fetchHikes(){
-    return fetch(`http://localhost:3000/hikes.json`)
+    return fetch(`https://agile-peak-09148.herokuapp.com/hikes.json`)
         .then(res => res.json())
         .then(function (res) {
             res.forEach(element => {
@@ -39,7 +39,7 @@ $(document).on('turbolinks:load', function() {
 
 function handleFetch(event) {
     
-  fetch(`http://localhost:3000/hikes/${event.srcElement.id}.json`)
+  fetch(`https://agile-peak-09148.herokuapp.com/hikes/${event.srcElement.id}.json`)
       .then(res => res.json())
       .then(function (json) {
           appendResults(json)
